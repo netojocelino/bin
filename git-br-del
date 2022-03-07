@@ -1,0 +1,7 @@
+#!/bin/sh
+#
+# Delete a branch
+
+echo 'Delete a branch'
+
+git branch --verbose --delete --force "$1"

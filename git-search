@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Search source line in log
+
+echo "Searching for $1"
+git --no-pager log -S $1 --source --all

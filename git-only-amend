@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+
+LAST_COMMIT="$(git log -1 --pretty=format:"%s")"
+echo -ne "Realizando 'amend' da operação:\n\t'"$LAST_COMMIT"'.\n"
+
+git commit --amend --no-edit
+

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Merge remote branch-tracking
+
+echo "Mergin with origin/$1"
+git merge --ff origin/$1

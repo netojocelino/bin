@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Synchronize local branches with remotes.
+
+
+echo 'Fetching remotes...'
+git fetch --prune
+echo
+
+BRANCHES=$(git for-each-ref refs/heads/ --format='%(upstream:short):%(refname:short)~%(upstream:track)')
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+BRANCHES_TO_FF=$(grep -v -e '~\[gone\]$' -e ":$CURRENT_BRANCH" <<< "$BRANCHES" | grep '^[^:].*~.')
+if [[ -n $BRANCHES_TO_FF ]]; then
+    echo 'Fast-forwarding local branches...'
+    while read -r BRANCH; do
+        echo "Update $(tr '~' ' ' <<< "${BRANCH#*:}")"
+        git fetch . "${BRANCH%~*}"
+        echo
+    done <<< "$BRANCHES_TO_FF"
+fi
+
+if grep -q ".*:$CURRENT_BRANCH~." <<< "$BRANCHES"; then
+    echo 'Pulling current branch...'
+    git pull
+    echo
+fi
+
+GONE_BRANCHES=$(grep '~\[gone\]$' <<< "$BRANCHES" | sed -e 's/^.*://; s/~.*$//')
+
+if [[ -n $GONE_BRANCHES ]]; then
+    echo '==========================='
+    echo "$GONE_BRANCHES"
+    echo '==========================='
+fi
+
+echo ""

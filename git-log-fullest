@@ -1,0 +1,11 @@
+#!/bin/sh
+# A complete commit log tree for git.
+
+p=$(git config --get core.pager) || p=${PAGER:-less}
+
+(
+    git log --color=always --format=fuller -1 2>&1 &&
+    echo &&
+    git log --color=always --all --date-order --decorate --graph --oneline
+) | $p
+

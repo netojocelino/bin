@@ -1,0 +1,6 @@
+#!/bin/sh
+
+
+BRANCH_CURRENT=$(git rev-parse --abbrev-ref HEAD)
+
+git pull $1 "$BRANCH_CURRENT"

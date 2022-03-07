@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Synchronize main with remotes and merge branch.
+#
+
+set -eu
+
+
+echo " ==> checkout 'main'"
+git checkout main
+
+echo " ==> pulling 'main'"
+git pull origin main
+
+echo " ==> checkout '$1'"
+git checkout "$1"
+
+echo " ==> pulling '$1'"
+git pull origin "$1"
+
+echo " => Merge '$1'"
+git checkout main
+git merge --no-ff "$1"
+
+
+code CHANGELOG.md

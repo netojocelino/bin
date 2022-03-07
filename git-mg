@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Merge local branch-tracking
+
+echo "Mergin with $1"
+git merge --ff $1

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "Adicionar flag de execução para arqivo versionado"
+git update-index --chmod=+x $1

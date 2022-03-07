@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Prints a full history tree
+
+git log --graph --full-history --all --color --pretty=tformat:"%<(15)%Cred%ar %Cgreen%s %Cblue%aN"
