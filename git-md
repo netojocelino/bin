@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Summary:
+#  git merge without commit
+git merge --no-ff --no-commit "$@" 
