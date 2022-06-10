@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Summary
+# List commits as a plain graph
+#
+
+git checkout "$1"
+
+git log --date-order --decorate --graph --oneline --first-parent
+
+git checkout -
