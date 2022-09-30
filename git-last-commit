@@ -1,0 +1,6 @@
+#!/bin/sh
+
+DEFAULT_REFNAME=HEAD
+REFNAME=${1:-$DEFAULT_REFNAME}
+
+git rev-parse --short "$REFNAME" 
