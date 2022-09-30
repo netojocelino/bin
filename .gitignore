@@ -1,0 +1,6 @@
+.no-git
+.docker
+docker-compose.yml
+Dockerfile
+.censitive
+.env

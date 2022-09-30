@@ -1,0 +1,5 @@
+[core]
+    excludesFile = ./.gitignore
+[user]
+    name = "Jocelino Neto"
+
