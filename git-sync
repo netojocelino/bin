@@ -41,9 +41,9 @@ if [[ -n $GONE_BRANCHES ]]; then
 
 
 
+    echo 
     echo 'Removing gone branches...'
     # shellcheck disable=SC2086
     git branch -d $GONE_BRANCHES
+    echo
 fi
-
-echo ""
