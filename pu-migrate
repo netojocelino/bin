@@ -1,0 +1,13 @@
+#!/bin/sh
+
+
+cd $(PWD)
+
+echo "====> Limpar banco: "
+php artisan db:wipe
+
+echo "====> Instalar migracao"
+php artisan migrate:install
+
+echo "====> Executar migracao"
+php artisan migrate

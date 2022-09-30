@@ -1,0 +1,3 @@
+#!/bin/sh
+
+php ./vendor/bin/phpunit --testdox --verbose --do-not-cache-result --stop-on-error "$@"
