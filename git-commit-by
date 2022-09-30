@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Commit using another author
+declare -A authors
+authors['aryel']="Aryel Mota Góis <aryel@visu.cc>"
+authors['fagner']="fagnerjunqueira <fagner@visu.cc>"
+
+
+if [ "$#" -lt 1 ]; then
+    >&2 echo "AUTHOR required"
+    >&2 echo 'git commit --author="<AUTHOR_NAME>"'
+    exit
+fi
+
+if [[ -v authors["$1"] ]]; then
+    git commit --author=\""${authors[$1]}"\"
+    echo "[OK]"
+else
+    echo "Author '$1' does not exists"
+fi
+
+# echo "Mergin with $1"
+# git merge --ff $1
