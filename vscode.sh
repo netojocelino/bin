@@ -39,8 +39,7 @@ EXTENSIONS=(
 	"octref.vetur"
 	"timonwong.shellcheck"
 	"wakatime.vscode-wakatime"
-	
-
+	"liamhammett.inline-parameters"
 )
 
 for (( i=0; i<${#EXTENSIONS[@]}; i++))
