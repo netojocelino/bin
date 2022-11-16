@@ -39,8 +39,8 @@ EXTENSIONS=(
 	"octref.vetur"
 	"timonwong.shellcheck"
 	"wakatime.vscode-wakatime"
-	
-
+	"ms-dotnettools.csharp"
+	"kreativ-software.csharpextensions"
 )
 
 for (( i=0; i<${#EXTENSIONS[@]}; i++))
