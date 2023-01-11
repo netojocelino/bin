@@ -1,4 +1,33 @@
 #!/bin/bash
 
-docker-compose exec -it "$1" bash
+# If exists call `docker compose` application and
+#    execute bash for container execute 
+#
+# USAGE
+#    dx CONTAINER_NAME
 
+cmd_exists () {
+    responses=$(command -v "$@" &> /dev/null)
+
+    if [ -z "$responses" ]
+    then
+        return 0
+    else
+        return 1
+    fi
+}
+
+
+if cmd_exists docker
+then
+    echo "[OK] Docker"
+    PROG=${2:-bash}
+    if ! cmd_exists docker-compose
+    then
+        echo "docker-compose $PROG"
+        docker-compose exec -it "$1" "$PROG"
+    else
+        echo "docker compose $PROG"
+        docker compose exec -it "$1" "$PROG"
+    fi
+fi
