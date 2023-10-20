@@ -1,0 +1,35 @@
+#!/bin/sh
+
+
+# sudo -k
+
+
+if [[ $# -gt 0 ]]; then
+    if [[ $1 = 'install' ]]; then
+        if [[ $# -gt 1 ]]; then
+            sudo dnf install -y "$2"
+        else
+            echo "Install software name's required"
+            exit 1
+        fi
+    elif [[ $1 = 'update' ]]; then
+
+        sudo dnf autoremove
+        sudo dnf check-update
+        sudo dnf upgrade --refresh
+
+        sudo flatpak update
+
+        echo -e "\n\n\nFlatpak packages"
+        flatpak --columns=name,size list
+        echo -e "\n\n"
+
+        flatpak uninstall --unused
+
+        echo -e "\n\nkernels: "
+        rpm -qa kernel
+        echo -e "dnf remove kernel-??"
+
+    fi
+fi
+
