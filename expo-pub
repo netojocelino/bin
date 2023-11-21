@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+if [[ $# -eq 0 ]]; then
+    echo "Obrigatório passar argumentos"
+    exit 1
+fi
+
+# Verificar se é publicar nova versão
+#   verifica código da versão se é a mesma que salva anteriormente
+
+# verifica se lança pelo canal
+
+if [[ $1 = 'android' ]]; then
+    echo "Android =D"
+    exit 0
+fi
+
+if [[ $1 = 'ios' ]]; then
+    IOS_PATH="$(pwd)/.dev/ios.version"
+
+    if [[ $2 = 'build-team' ]]; then
+        if [[ -f "$IOS_PATH" ]]; then
+            LOCAL_VERSION=$(cat "$IOS_PATH")
+            PROJECT_VERSION=$(cat app.json | grep buildNumber | grep -oh '[0-9.]*')
+
+            if [[ $LOCAL_VERSION = $PROJECT_VERSION ]]; then
+                echo "Necessário alterar versão de build do IOS"
+                exit 2
+            fi
+            npm run build:team:ios && echo -n "$PROJECT_VERSION" > "$IOS_PATH"
+        fi
+        
+        if [[ $3 -ne 'submit' ]]; then
+            exit 0
+        fi
+    elif [[ $2 = 'build' ]]; then
+        if [[ -f "$IOS_PATH" ]]; then
+            LOCAL_VERSION=$(cat "$IOS_PATH")
+            PROJECT_VERSION=$(cat app.json | grep buildNumber | grep -oh '[0-9.]*')
+
+            if [[ $LOCAL_VERSION = $PROJECT_VERSION ]]; then
+                echo "Necessário alterar versão de build do IOS"
+                exit 2
+            fi
+            npm run build:ios && echo -n "$PROJECT_VERSION" > "$IOS_PATH"
+        fi
+        
+        if [[ $3 -ne 'submit' ]]; then
+            exit 0
+        fi
+    fi
+
+    if [[ $2 = 'submit' ]] || [[ $3 = 'submit' ]]; then
+        npm run ios:submit
+    fi
+    echo "IOS =D"
+    exit 0
+fi
+
+
+echo "OS inválido"
+exit 1

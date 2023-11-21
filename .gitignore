@@ -1,5 +1,6 @@
 .no-git
 .docker
+.dev
 docker-compose.yml
 Dockerfile
 .censitive
