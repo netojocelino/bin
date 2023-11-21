@@ -3,6 +3,14 @@
 
 # sudo -k
 
+throws () {
+    echo -e "\033[41;97m"$1"\033[0m"
+}
+
+info () {
+    echo -e "\033[40;1;43m"$1"\033[0m"
+}
+
 
 if [[ $# -gt 0 ]]; then
     if [[ $1 = 'install' ]]; then
