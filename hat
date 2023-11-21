@@ -17,11 +17,12 @@ if [[ $# -gt 0 ]]; then
         if [[ $# -gt 1 ]]; then
             sudo dnf install -y "$2"
         else
-            echo "Install software name's required"
+            throws "Install software name's required"
             exit 1
         fi
     elif [[ $1 = 'update' ]] || [[ $1 = 'u' ]]; then
 
+        info "\n\nAuto remove, check updates and upgrade\n"
         sudo dnf autoremove
         sudo dnf check-update
         sudo dnf upgrade --refresh --best --allowerasing --skip-broken
@@ -29,15 +30,15 @@ if [[ $# -gt 0 ]]; then
 
         sudo flatpak update
 
-        echo -e "\n\n\nFlatpak packages"
+        info "\n\nFlatpak packages\n"
         flatpak --columns=name,size list
         echo -e "\n\n"
 
         flatpak uninstall --unused
 
-        echo -e "\n\nkernels: "
+        info "\n\nkernels:\n"
         rpm -qa kernel
-        echo -e "dnf remove kernel-??"
+        info "\n\ndnf remove kernel-??\n"
 
     fi
 fi
