@@ -24,7 +24,8 @@ if [[ $# -gt 0 ]]; then
 
         sudo dnf autoremove
         sudo dnf check-update
-        sudo dnf upgrade --refresh
+        sudo dnf upgrade --refresh --best --allowerasing --skip-broken
+        sudo dnf update
 
         sudo flatpak update
 
