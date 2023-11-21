@@ -33,6 +33,16 @@ elif [[ $1 = "a" ]]; then
     shift
     ./vendor/bin/sail artisan "$@"
 
+elif [[ $1 = "c" ]]; then
+    shift
+    ./vendor/bin/sail composer "$@"
+
+
+elif [[ $1 = "cr" ]]; then
+    shift
+    ./vendor/bin/sail composer require "$@"
+
+
 else
     echo "unkown command"
     exit 0
