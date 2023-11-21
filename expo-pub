@@ -11,6 +11,47 @@ fi
 # verifica se lança pelo canal
 
 if [[ $1 = 'android' ]]; then
+    ANDROID_PATH="$(pwd)/.dev/android.version"
+
+    if [[ $2 = 'build-team' ]]; then
+
+        if [[ ! -f "$ANDROID_PATH" ]]; then
+            touch "$ANDROID_PATH"
+        fi
+        # exit 1
+
+        if [[ -f "$ANDROID_PATH" ]]; then
+            LOCAL_VERSION=$(cat "$ANDROID_PATH")
+            PROJECT_VERSION=$(cat app.json | grep versionCode | grep -oh '[0-9.]*')
+
+            if [[ $LOCAL_VERSION = $PROJECT_VERSION ]]; then
+                echo "Necessário alterar versão de build do Android"
+                exit 2
+            fi
+            npm run build:team:android && echo -n "$PROJECT_VERSION" > "$ANDROID_PATH"
+        fi
+
+        if [[ $3 -ne 'submit' ]]; then
+            exit 0
+        fi
+    elif [[ $2 = 'build' ]]; then
+        if [[ -f "$ANDROID_PATH" ]]; then
+            LOCAL_VERSION=$(cat "$ANDROID_PATH")
+            PROJECT_VERSION=$(cat app.json | grep versionCode | grep -oh '[0-9.]*')
+
+            if [[ $LOCAL_VERSION = $PROJECT_VERSION ]]; then
+                echo "Necessário alterar versão de build do Android"
+                exit 2
+            fi
+            # npm run build:android && echo -n "$PROJECT_VERSION" > "$ANDROID_PATH"
+        fi
+        npm run build:android && echo -n "$PROJECT_VERSION" > "$ANDROID_PATH"
+
+        if [[ $3 -ne 'submit' ]]; then
+            exit 0
+        fi
+    fi
+
     echo "Android =D"
     exit 0
 fi
@@ -29,7 +70,7 @@ if [[ $1 = 'ios' ]]; then
             fi
             npm run build:team:ios && echo -n "$PROJECT_VERSION" > "$IOS_PATH"
         fi
-        
+
         if [[ $3 -ne 'submit' ]]; then
             exit 0
         fi
@@ -44,7 +85,7 @@ if [[ $1 = 'ios' ]]; then
             fi
             npm run build:ios && echo -n "$PROJECT_VERSION" > "$IOS_PATH"
         fi
-        
+
         if [[ $3 -ne 'submit' ]]; then
             exit 0
         fi
