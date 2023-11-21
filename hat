@@ -40,6 +40,16 @@ if [[ $# -gt 0 ]]; then
         rpm -qa kernel
         info "\n\ndnf remove kernel-??\n"
 
+    elif [[ $1 = 'battery' ]] || [[ $1 = 'b' ]]; then
+    while [[ true ]]; do
+        clear
+        echo "Situação de bateria em $(date)"
+        echo "$((upower -i $(upower -e | grep battery_)) | grep -E 'capacity|state|percentage|temperature')"
+        sleep 4
+    done
     fi
+else
+    throws "Opção inválida"
+    exit 1
 fi
 
