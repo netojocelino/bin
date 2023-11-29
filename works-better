@@ -17,6 +17,9 @@ notify () {
     notify-send --urgency=normal -i info "$title" "$1"
 }
 
+long_notify () {
+    notify-send --urgency=normal -t 10000 -i info "$title" "$1"
+}
 
 notify "Iniciando trabalho"
 while :; do
@@ -24,6 +27,6 @@ while :; do
     notify "$description"
 
     sleep $rest
-    notify "Volte ao trabalho"
+    long_notify "Volte ao trabalho"
 done
 
