@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# A utility remeber to drink water and take a rest
+#
+# Author: Jocelino Neto <https://github.com/netojocelino>
+# Author: Aryel Mota Góis <https://github.com/aryelgois>
+
+set -eu
+
+works_with=${1:-Livre}
+title="Trabalho $works_with"
+description="Tire uma pausa, beba uma água e faça alongamentos"
+delay=900
+rest=300
+
+notify () {
+    notify-send --urgency=normal -i info "$title" "$1"
+}
+
+
+notify "Iniciando trabalho"
+while :; do
+    sleep $delay
+    notify "$description"
+
+    sleep $rest
+    notify "Volte ao trabalho"
+done
+
