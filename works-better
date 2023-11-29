@@ -18,7 +18,7 @@ notify () {
 }
 
 long_notify () {
-    notify-send --urgency=normal -t 10000 -i info "$title" "$1"
+    notify-send --urgency=critical -i info "$title" "$1"
 }
 
 notify "Iniciando trabalho"
