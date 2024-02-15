@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# if [[ $# -eq 0 ]]; then
+#     echo "Iniciamos com $(php --version | grep -oh 'PHP [0-9.]')"
+# fi
+
+function danger () {
+    echo -e "\033[0;101m\033[30m$1\033[0m"
+}
+
+PROJECT_ENV_PATH="$(pwd)/.env"
+PROJECT_COMPOSER_PATH="$(pwd)/composer.json"
+
+
+if [[ ! -f "$PROJECT_ENV_PATH" ]] ; then
+    danger "Arquivo de ambiente PHP não encontrado"
+    exit 1
+fi
+
+ENV_DATA=$(cat "$PROJECT_ENV_PATH")
+PROJECT_PORT_FILE=$(cat "$PROJECT_ENV_PATH" | grep APP_PORT | grep -oh '[0-9.]*')
+PROJECT_PORT=${PROJECT_PORT_FILE:-8000}
+
+if [[ $1 = '7' ]]; then
+    php74 -S 0.0.0.0:"$PROJECT_PORT" -t public
+else
+    php -S 0.0.0.0:"$PROJECT_PORT" -t public
+fi
