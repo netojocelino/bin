@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+
+# use recursivelly an git command when exists `.git`
+
+# TODO
+# - -e|--exclude-dir
+#   use basename $1 for ignore directory
+
+declare -a GIT_PATHS=()
+IGNORE_PATHS=""
+
+function danger () {
+    echo -e "\033[0;101m\033[30m$1\033[0m  $2"
+}
+
+function success () {
+    echo -e "\033[0;102m\033[30m   $1  \033[0m  $2"
+}
+
+function iterate_directory () {
+	for D in $(find $1 -mindepth 1 -maxdepth 1 -type d); do
+        check_has_git "$(realpath "${D}")" "$2"
+    done
+}
+
+function check_has_git () {
+    if [[ ! -d "$1" ]]; then
+        danger  "$(realpath "$1") não é um diretório válido"
+        return;
+    fi
+
+    cd "$1"
+
+    if [[ -d ".git" ]]; then
+        GIT_PATHS+=($1)
+    else
+        iterate_directory "$1" "$2"
+    fi
+
+    cd ".."
+}
+
+function commandPattern () {
+    ITERATE_DIR=$1
+    shift
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            fetch)
+                success "[FETCH]" "| $(basename $ITERATE_DIR)"
+
+                cd "$ITERATE_DIR"
+                git fetch --all --prune
+                shift
+                ;;
+            -e|--exclude)
+                shift
+                shift
+                ;;
+            *)
+                danger "  [ERROR]  " "Comando '$1' não encontrado"
+                shift
+                ;;
+        esac
+    done
+}
+
+function prepareCommandPattern () {
+    ITERATE_DIR=$1
+    shift
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            -e|--exclude)
+                IGNORE_PATHS="$2"
+                shift
+                shift
+                ;;
+            *)
+                # danger "  [ERROR]  " "Comando '$1' não encontrado"
+                shift
+                ;;
+        esac
+    done
+}
+
+iterate_directory "$(pwd)" "$@"
+
+prepareCommandPattern "$@"
+
+for item in ${!GIT_PATHS[@]}; do
+    if [[ $(basename "${GIT_PATHS[$item]}") != "$IGNORE_PATHS" ]]; then
+        commandPattern "${GIT_PATHS[$item]}" "$@"
+    fi
+done

@@ -2,8 +2,25 @@
 
 # list all directories and fetch when exists `.git`
 
+
+BASEDIR="$(pwd)"
+
 function danger () {
     echo -e "\033[0;101m\033[30m$1\033[0m"
+}
+
+
+function test_dir () {
+    while IFS='' read -r p || [[ -n "$p" ]]; do
+        [[ "$p"  == "" ]] && continue;
+
+        if [[ "$p" == "$1" ]]; then
+            danger "skip $(basename $1)"
+            return 0
+        fi
+    done <"$BASEDIR/.fetchignore"
+
+    return 1
 }
 
 function iterate_directory () {
@@ -22,13 +39,21 @@ function check_has_git () {
 
     cd "$1"
 
+if [[ $(basename $1) != "paynet"  ]]; then
+        # continue
+        # git fetch --all --prune
+    # fi
+
     
     if [[ -d ".git" ]]; then
         echo -e "\033[0;102m\033[30m   [FETCH]  \033[0m |  $1"
-        git fetch --all --prune
+        # if [[ test_dir "$1" ]]; then
+            git fetch --all --prune
+        # fi
     else
         iterate_directory "$1"
     fi
+fi
 
     cd ".."
 }

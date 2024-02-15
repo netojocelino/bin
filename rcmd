@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+# Execute a git command for every directory 
+
+function danger () {
+    echo -e "\033[0;101m\033[30m$1\033[0m"
+}
+
+function iterate_directory () {
+    for D in $(find $1 -mindepth 1 -maxdepth 1 -type d); do
+        check_has_git "$(realpath "${D}")"
+    done
+}
+
+
+function check_has_git () {
+    
+    if [[ ! -d "$1" ]]; then
+        danger  "$(realpath "$1") não é um diretório válido"
+        return;
+    fi
+
+    cd "$1"
+
+    
+    if [[ -d ".git" ]]; then
+        echo -e "\033[0;102m\033[30m[EXEC]\033[0m |  $1"
+        # echo "Executar comando"
+        # CUSTOM COMMAND
+        # git fetch --all --prune
+        # git status
+        # git checkout .
+        # git config core.fileMode false
+        # # composer install
+        # php74 composer install
+        # # php74 composer require aws/aws-sdk-php
+        # git config --local user.email "jocelino@paynet.net.br"
+
+
+        # code .git/config
+        # git config --local credential.helper 'store'
+
+        # git remote -v | grep fetch
+
+        echo $(git rev-parse --abbrev-ref HEAD)
+
+        read -p "Continuar" </dev/null
+    # fi
+    # if [[ -f ".env" ]]; then
+    #     # head -n 6 .env
+    #     echo $(cat .env | grep APP_PORT)
+    else
+        iterate_directory "$1"
+    fi
+
+    cd ".."
+}
+
+iterate_directory "$(pwd)" "$@"
