@@ -5,11 +5,28 @@
 
 throws () {
     echo -e "\033[41;97m"$1"\033[0m"
+    
+    notify-send --urgency=critical -i error "An error occours" "$1"
 }
 
 info () {
     echo -e "\033[40;1;43m"$1"\033[0m"
 }
+
+check_if_sudo () {
+    if [[ "$EUID" -ne 0 ]]; then
+        notify-send --urgency=normal -i info "Info" "$1"
+        sudo echo ""
+    fi
+}
+
+check_if_sudo "Sudo required"
+
+
+# php 74
+# sudo dnf install php74-php-cli php74-php-fpm php74-php-gd php74-php-curl php74-php-mysqlnd php74-php-zip php74-php-xml php74-php-mbstring php74-php-bcmath php74-php-sodium
+# php 55
+# sudo dnf install php5-php-cli php5-php-fpm php5-php-gd php5-php-curl php5-php-mysqlnd php5-php-zip php5-php-xml php5-php-mbstring php5-php-bcmath php5-php-sodium
 
 
 if [[ $# -gt 0 ]]; then
